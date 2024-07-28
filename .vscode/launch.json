@@ -1,10 +1,10 @@
 {
     "configurations": [
         {
-            "type": "chrome",
+            "type": "firefox",
             "name": "http://localhost:5173/",
             "request": "launch",
-            "url": "http://localhost:5173/"
+            "url": "http://localhost:5173/",
         }
     ]
 }

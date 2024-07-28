@@ -5,7 +5,7 @@ import { RendererSystemAspect } from './aspects/renderer-aspect';
 import { Component, ComponentType } from '../components/component';
 
 export class RendererSystem extends System {
-    public readonly trackedComponents: Set<Component> = new Set([PlayerGraphics]);
+    public readonly trackedComponents: Set<ComponentType<Component>> = new Set([PlayerGraphics]);
 
     public override onComponentAdd(entity: Entity): void {
         const playerGraphics = this.manager.getComponent(entity, PlayerGraphics as ComponentType<PlayerGraphics>);

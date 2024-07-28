@@ -14,10 +14,9 @@ export class Query {
     run(): Array<Entity> {
         const entities: Array<Entity> = [];
 
-        for (const entity of this.manager.entities) {
+        for (const entity of this.manager.entities)
             if (this.manager.hasAllComponents(entity, this.componentTypes))
                 entities.push(entity);
-        }
 
         return entities;
     }

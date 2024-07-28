@@ -1,11 +1,11 @@
 import { Aspect } from './aspects/aspect';
 import { Entity } from '../entities/entity';
 import { ECSManager } from '../ecs-manager';
-import { Component } from '../components/component';
+import { Component, ComponentType } from '../components/component';
 
 export abstract class System {
     public readonly manager: ECSManager;
-    public abstract readonly trackedComponents: Set<Component>;
+    public abstract readonly trackedComponents: Set<ComponentType<Component>>;
     public readonly aspect: Aspect | null;
 
     constructor(manager: ECSManager, aspect: Aspect | null = null) {

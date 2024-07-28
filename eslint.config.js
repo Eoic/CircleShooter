@@ -13,6 +13,7 @@ export default tseslint.config(
     },
     rules: {
       "no-unused-vars": "off",
+      curly: ["error", "multi"],
       quotes: ["error", "single"],
       indent: ["error", 4],
       "max-len": ["error", 120],

@@ -1,10 +1,11 @@
 import * as PIXI from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
 import { ECSManager } from './ecs/ecs-manager';
-import { Input, Movement, PlayerGraphics, Transform } from './ecs/components';
+import { Movement, PlayerGraphics, Transform } from './ecs/components';
 import { WORLD_BACKGROUND_COLOR, WORLD_HEIGHT, WORLD_WIDTH } from './constants';
-import { InputSystem, MovementSystem, RendererSystem } from './ecs/systems';
+import { MovementSystem, RendererSystem } from './ecs/systems';
 import { RendererSystemAspect } from './ecs/systems/aspects';
+import { Vector } from './math/vector';
 
 export class Scene {
     private readonly _viewport: Viewport;
@@ -61,16 +62,19 @@ export class Scene {
         const manager = new ECSManager();
         const player = manager.createEntity();
 
+        const initialPosition = new Vector(
+            this._viewport.worldWidth / 2,
+            this._viewport.worldHeight / 2
+        )
+
         manager
-            .addSystem(new InputSystem(manager))
             .addSystem(new MovementSystem(manager))
             .addSystem(new RendererSystem(manager, new RendererSystemAspect(this._viewport)));
 
         manager
-            .addComponent(player, new Transform())
-            .addComponent(player, new Movement(10))
-            .addComponent(player, new Input())
-            .addComponent(player, new PlayerGraphics(0xFFF000, 10));
+            .addComponent(player, new Transform(initialPosition))
+            .addComponent(player, new Movement(15))
+            .addComponent(player, new PlayerGraphics(0x4f68c6, 0x2a3d82, 100));
 
         this._app.ticker.add((deltaTime) => manager.update(deltaTime));
 
