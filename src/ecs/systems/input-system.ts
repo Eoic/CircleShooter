@@ -2,15 +2,15 @@ import { Query } from '../query';
 import { System } from './system';
 import { Input } from '../components/input';
 import { ECSManager } from '../ecs-manager';
-import { Aspect } from './aspects/aspect';
+import { Component } from '../components/component';
 
 export class InputSystem extends System {
+    public readonly trackedComponents: Set<Component> = new Set([Input])
+
     constructor(manager: ECSManager) {
         super(manager);
         this._addEvents();
     }
-
-    update(_deltaTime: number): void { }
 
     private _addEvents() {
         window.addEventListener('keydown', this._handleKeyDown);
@@ -18,7 +18,7 @@ export class InputSystem extends System {
     }
 
     private _handleKeyDown = (event: KeyboardEvent) => {
-        const entities = new Query(this.manager, [Input]).run();
+        const entities = new Query(this.manager, new Set([Input])).run();
 
         entities.forEach((entity) => {
             const input = this.manager.getComponent(entity, Input);
@@ -37,7 +37,7 @@ export class InputSystem extends System {
     }
 
     private _handleKeyUp = (event: KeyboardEvent) => {
-        const entities = new Query(this.manager, [Input]).run();
+        const entities = new Query(this.manager, new Set([Input])).run();
 
         entities.forEach((entity) => {
             const input = this.manager.getComponent(entity, Input);
@@ -53,9 +53,5 @@ export class InputSystem extends System {
                     input.right = 0;
             }
         });
-    }
-
-    makeAspect(): Aspect {
-        return new Aspect();
     }
 }

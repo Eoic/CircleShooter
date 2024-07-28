@@ -1,13 +1,10 @@
 import * as PIXI from 'pixi.js';
 import { Viewport } from 'pixi-viewport';
-import { WORLD_BACKGROUND_COLOR, WORLD_HEIGHT, WORLD_WIDTH } from './constants';
 import { ECSManager } from './ecs/ecs-manager';
-import { Transform } from './ecs/components/transform';
-import { MovementSystem } from './ecs/systems/movement-system';
-import { Movement } from './ecs/components/movement';
-import { InputSystem } from './ecs/systems/input-system';
-import { Input } from './ecs/components/input';
-import { RendererSystem } from './ecs/systems/renderer-system';
+import { Input, Movement, PlayerGraphics, Transform } from './ecs/components';
+import { WORLD_BACKGROUND_COLOR, WORLD_HEIGHT, WORLD_WIDTH } from './constants';
+import { InputSystem, MovementSystem, RendererSystem } from './ecs/systems';
+import { RendererSystemAspect } from './ecs/systems/aspects';
 
 export class Scene {
     private readonly _viewport: Viewport;
@@ -64,12 +61,16 @@ export class Scene {
         const manager = new ECSManager();
         const player = manager.createEntity();
 
-        manager.addComponent(player, new Transform());
-        manager.addComponent(player, new Movement(10))
-        manager.addComponent(player, new Input())
-        manager.addSystem(new InputSystem(manager));
-        manager.addSystem(new MovementSystem(manager));
-        manager.addSystem(new RendererSystem(manager));
+        manager
+            .addSystem(new InputSystem(manager))
+            .addSystem(new MovementSystem(manager))
+            .addSystem(new RendererSystem(manager, new RendererSystemAspect(this._viewport)));
+
+        manager
+            .addComponent(player, new Transform())
+            .addComponent(player, new Movement(10))
+            .addComponent(player, new Input())
+            .addComponent(player, new PlayerGraphics(0xFFF000, 10));
 
         this._app.ticker.add((deltaTime) => manager.update(deltaTime));
 

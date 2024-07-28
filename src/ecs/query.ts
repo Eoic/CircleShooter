@@ -4,9 +4,9 @@ import { Component, ComponentType } from './components/component';
 
 export class Query {
     private manager: ECSManager;
-    private componentTypes: Array<ComponentType<Component>>;
+    private componentTypes: Set<ComponentType<Component>>;
 
-    constructor(manager: ECSManager, componentTypes: Array<ComponentType<Component>>) {
+    constructor(manager: ECSManager, componentTypes: Set<ComponentType<Component>>) {
         this.manager = manager;
         this.componentTypes = componentTypes;
     }
