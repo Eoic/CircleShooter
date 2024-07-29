@@ -1,6 +1,6 @@
 // Scene.
-export const WORLD_WIDTH = 1920;
-export const WORLD_HEIGHT = 1280;
+export const WORLD_WIDTH = 2000;
+export const WORLD_HEIGHT = 2000;
 export const WORLD_BACKGROUND_COLOR = 0x03070c;
 
 // Network.

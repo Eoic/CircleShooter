@@ -21,6 +21,10 @@
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "noFallthroughCasesInSwitch": true,
+        /* Types */
+        "types": [
+            "vite-plugin-glsl.ext"
+        ]
     },
     "include": [
         "src"
