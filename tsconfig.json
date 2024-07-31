@@ -23,10 +23,10 @@
         "noFallthroughCasesInSwitch": true,
         /* Types */
         "types": [
-            "vite-plugin-glsl.ext"
+            "vite-plugin-glsl/ext"
         ]
     },
     "include": [
-        "src"
+        "src",
     ]
 }
