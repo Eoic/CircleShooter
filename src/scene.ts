@@ -8,6 +8,8 @@ import { RendererSystemAspect } from './ecs/systems/aspects';
 import { Vector } from './math/vector';
 import gridVertexShader from '../shaders/grid.vert';
 import gridFragmentShader from '../shaders/grid.frag';
+import { CameraFollowSystem } from './ecs/systems/camera-follow';
+import { CameraFollowSystemAspect } from './ecs/systems/aspects/camera-follow-aspect';
 
 export class Scene {
     private readonly _viewport: Viewport;
@@ -50,6 +52,8 @@ export class Scene {
 
         const gridMesh = new PIXI.Mesh(gridGeometry, shader);
         gridMesh.position.set(width / 2, height / 2);
+        gridMesh.width = width * 2;
+        gridMesh.height = height * 2;
         gridMesh.eventMode = 'none';
 
         return this._viewport.addChild(gridMesh);
@@ -85,7 +89,7 @@ export class Scene {
 
         viewport.drag({ mouseButtons: 'middle-right' }).pinch().wheel().clampZoom({
             minScale: 0.15,
-            maxScale: 12.5,
+            maxScale: 5.5,
         });
 
         viewport.fit();
@@ -105,12 +109,15 @@ export class Scene {
 
         manager
             .addSystem(new MovementSystem(manager))
+            .addSystem(new CameraFollowSystem(manager, new CameraFollowSystemAspect(this._viewport)))
             .addSystem(new RendererSystem(manager, new RendererSystemAspect(this._viewport)));
 
         manager
             .addComponent(player, new Transform(initialPosition))
             .addComponent(player, new Movement(15))
             .addComponent(player, new PlayerGraphics(0x4f68c6, 0x2a3d82, 100));
+
+        this._app.ticker.maxFPS = 60;
 
         this._app.ticker.add((deltaTime) => {
             manager.update(deltaTime);
@@ -132,8 +139,6 @@ export class Scene {
     private handleWindowResize = () => {
         this._app?.resize();
         this._viewport?.resize(window.innerWidth, window.innerHeight);
-        console.log(this._viewport.screenWidth, this._viewport.screenHeight);
-        console.log(this._viewport.worldWidth, this._viewport.worldHeight);
         this._grid.shader.uniforms.uResolution = [this._app.view.width, this._app.view.height];
     };
 }
